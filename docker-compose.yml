@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: lms-db-container
+    environment:
+      - POSTGRES_DB=lms_db
+      - POSTGRES_USER=dev_user
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d lms_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend-app:
+    build: .
+    container_name: lms-app-container
+    ports:
+      - "8888:8888"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - DB_HOST=database
+      - SPRING_DATASOURCE_USERNAME=dev_user
+      - SPRING_DATASOURCE_PASSWORD=123456
