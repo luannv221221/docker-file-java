@@ -2,6 +2,9 @@
 FROM gradle:8.5-jdk17-alpine AS build
 WORKDIR /app
 COPY . .
+
+RUN chmod +x gradlew
+
 RUN ./gradlew bootJar -x test
 
 # Stage 2: Chạy ứng dụng bằng JRE nhẹ
