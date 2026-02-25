@@ -19,7 +19,7 @@ services:
     build: .
     container_name: lms-app-container
     ports:
-      - "8888:8888"
+      - "8888:8889"
     depends_on:
       database:
         condition: service_healthy
